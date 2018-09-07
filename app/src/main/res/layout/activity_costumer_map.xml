@@ -131,25 +131,25 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TaxiITX"
-                    android:id="@+id/UberX"/>
+                    android:text="Taxi"
+                    android:id="@+id/Taxi"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TaxiITBlack"
-                    android:id="@+id/UberBlack"/>
+                    android:text="TukTuk"
+                    android:id="@+id/tuktuk"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TaxiITXl"
-                    android:id="@+id/UberXl"/>
+                    android:text="Boda Boda"
+                    android:id="@+id/boda"/>
             </RadioGroup>
 
             <Button
                 android:layout_gravity="bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="call TaxiIT"
+                android:text="Get a Ride"
                 android:textColor="@color/white"
                 android:padding="5dp"
                 android:layout_margin="5dp"
