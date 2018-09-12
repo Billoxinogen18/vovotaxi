@@ -34,11 +34,11 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class Driver extends AppCompatActivity {
-
+    private DatabaseReference mDatabase;
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
+
     EditText phoneed, codeed;
     ImageView fabbutton;
     String mVerificationId;
@@ -184,7 +184,7 @@ public class Driver extends AppCompatActivity {
 
                         HashMap<String, String> userMap = new HashMap<>();
                         userMap.put("name", display_name);
-                        userMap.put("status", "Hi there I'm using TaxIT on the go App.");
+                        userMap.put("status", "Hi there I'm using Vovo Ride on the go App.");
                         userMap.put("image", "default");
                         userMap.put("points", "0");
                         userMap.put("numberplate", numberplate);

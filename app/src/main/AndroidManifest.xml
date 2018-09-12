@@ -16,6 +16,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -61,10 +63,10 @@
         <activity
             android:name="com.israelox.taxi.taxit.DriverMapActivity"
             android:label="@string/title_activity_driver_map"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+         android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.israelox.taxi.taxit.CustomerMapActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.israelox.taxi.taxit.CustomerSettingsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -76,6 +78,21 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.israelox.taxi.taxit.HistorySingleActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.israelox.taxi.taxit.LoginSignUpDriver"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name="com.israelox.taxi.taxit.LoginSignUpPassenger"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name="com.israelox.taxi.taxit.RealLogConsumer"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name="com.israelox.taxi.taxit.RealLogDriver"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name="com.israelox.taxi.taxit.LocationService" />

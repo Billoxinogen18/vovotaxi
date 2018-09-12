@@ -12,6 +12,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.location.Criteria;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -23,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -80,6 +82,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,6 +123,40 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
 
 
 
+
+
+    public double latitude;
+    public String ratingso;
+    public  String timeso;
+
+    public double longitude;
+    public LocationManager locationManager;
+    public String titleso;
+    public String contentso;
+
+    public String imgso;
+    public String costso;
+
+
+    public Criteria criteria;
+    public String bestProvider;
+
+    private String URL_FEED = "http://www.wayawaya.co.ke/wayawaya.co.ke/bill/wanlive/wanlive_thebalanceofdestiny.json";
+
+
+
+
+
+
+    // The entry points to the Places API.
+
+
+
+
+
+
+
+
     private FirebaseAuth mAuth;
     Location mLastLocation;
 
@@ -156,13 +193,26 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
 
     LocationService myService;
     static boolean statusf;
-    LocationManager locationManager;
+
     static TextView dist, time, speed;
     Button start, pause, stop;
     static long startTime, endTime;
     ImageView image;
     static ProgressDialog locate;
     static int p = 0;
+
+
+    private ImageView settings;
+    private ImageView inbox;
+    private ImageView message;
+    private ImageView location;
+    private Button logout;
+
+    private Button places;
+    private Double latitSelected;
+    private Double longitSelected;
+    private String latits;
+    private String longits;
 
     private ServiceConnection sc = new ServiceConnection() {
         @Override
@@ -350,9 +400,16 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
                 isLoggingOut = true;
 
                 disconnectDriver();
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("STATEDRIVE", "Passenge").clear();
+
+                File sharedPreferenceFile = new File("/data/data/"+ getPackageName()+ "/shared_prefs/");
+                File[] listFiles = sharedPreferenceFile.listFiles();
+                for (File file : listFiles) {
+                    file.delete();
+                }
 
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(DriverMapActivity.this, Driver.class);
+                Intent intent = new Intent(DriverMapActivity.this, LoginSignUpDriver.class);
                 startActivity(intent);
                 finish();
                 return;
@@ -854,30 +911,74 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
          */
         try {
             if (mLocationPermissionGranted) {
-                Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            mLastKnownLocation = task.getResult();
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-                        } else {
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            Log.e(TAG, "Exception: %s", task.getException());
-                            mMap.moveCamera(CameraUpdateFactory
-                                    .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
-                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                        }
-                    }
-                });
+
+                locationManager = (LocationManager)  this.getSystemService(Context.LOCATION_SERVICE);
+                criteria = new Criteria();
+                bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
+
+                //You can still do this if you like, you might get lucky:
+                Location location = locationManager.getLastKnownLocation(bestProvider);
+                if (location != null) {
+                    Log.e("TAG", "GPS is on");
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                            new LatLng(latitude,
+                                    longitude), DEFAULT_ZOOM));
+
+                }
+                else{
+                    //This is what you need:
+                    Log.d(TAG, "Current location is null. Using defaults.");
+
+//                    Toast.makeText(this, "Location is null", Toast.LENGTH_SHORT).show();
+
+                    mMap.moveCamera(CameraUpdateFactory
+                            .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
+                    mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//                Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+//                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Location> task) {
+//                        if (task.isSuccessful()) {
+//                            // Set the map's camera position to the current location of the device.
+//                            mLastKnownLocation = task.getResult();
+//                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+//                                    new LatLng(mLastKnownLocation.getLatitude(),
+//                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+//                        } else {
+//                            Log.d(TAG, "Current location is null. Using defaults.");
+//                            Log.e(TAG, "Exception: %s", task.getException());
+//                            mMap.moveCamera(CameraUpdateFactory
+//                                    .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
+//                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+//                        }
+//                    }
+//                });
             }
-        } catch (SecurityException e) {
+        } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
     }
+
 
 
     /**

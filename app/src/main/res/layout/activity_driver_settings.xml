@@ -39,22 +39,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/radioGroup"
+
         android:orientation="horizontal">
         <RadioButton
-            android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
-            android:text="TaxITX"
-            android:id="@+id/UberX"/>
+            android:text="Bike"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/boda"/>
         <RadioButton
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="TaxiItBlack"
-            android:id="@+id/UberBlack"/>
+            android:text="Tuk Tuk"
+
+            android:id="@+id/tuktuk"/>
         <RadioButton
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="TaxiITXl"
-            android:id="@+id/UberXl"/>
+            android:text="Taxi"
+            android:id="@+id/taxi"/>
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Hire"
+            android:id="@+id/limo"/>
     </RadioGroup>
 
     <Button

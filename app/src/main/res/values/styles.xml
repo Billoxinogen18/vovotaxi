@@ -6,6 +6,8 @@
         <item name="android:textSize">36sp</item>
     </style>
 
+    <!--styles the toolbar to this color and font color-->
+
 
     <style name="btn" parent="android:Widget.Holo.Light.Button">
         <item name="android:minHeight">1dp</item>

@@ -4,12 +4,17 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.kishan.askpermission.AskPermission;
 import com.kishan.askpermission.ErrorCallback;
 import com.kishan.askpermission.PermissionCallback;
@@ -22,10 +27,36 @@ public class login extends AppCompatActivity implements PermissionCallback, Erro
 
     private Button driver;
     private Button passenger;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
+    SharedPreferences sp;
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+
+            String state= PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("STATEDRIVE", "none");
+
+            if(state.equals("Driver")) {
+                startActivity(new Intent(getApplicationContext(), DriverMapActivity.class));
+                finish();
+            }
+            else
+                if (state.equals("Passenger"))
+                {
+                    startActivity(new Intent(getApplicationContext(), CustomerMapActivity.class));
+                    finish();
+
+                }
+
+                else
+                {
+                    return;
+                }
+        }
 
         reqPermission();
     }
@@ -37,7 +68,7 @@ public class login extends AppCompatActivity implements PermissionCallback, Erro
 
 
 
-
+        mAuth = FirebaseAuth.getInstance();
 
 
         driver=(Button)findViewById(R.id.driver);
@@ -49,7 +80,7 @@ public class login extends AppCompatActivity implements PermissionCallback, Erro
             public void onClick(View v) {
 
 
-                startActivity(new Intent(getApplicationContext(), Driver.class));
+                startActivity(new Intent(getApplicationContext(), LoginSignUpDriver.class));
                 overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
 
@@ -59,7 +90,7 @@ public class login extends AppCompatActivity implements PermissionCallback, Erro
         passenger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Passenger.class));
+                startActivity(new Intent(getApplicationContext(), LoginSignUpPassenger.class));
                 overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
 
             }

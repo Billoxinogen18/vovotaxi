@@ -129,14 +129,17 @@ public class DriverSettingsActivity extends AppCompatActivity {
                     if(map.get("service")!=null){
                         mService = map.get("service").toString();
                         switch (mService){
+                            case"Bike":
+                                mRadioGroup.check(R.id.boda);
+                                break;
+                            case"TukTuk":
+                                mRadioGroup.check(R.id.tuktuk);
+                                break;
                             case"Taxi":
-                                mRadioGroup.check(R.id.UberX);
+                                mRadioGroup.check(R.id.taxi);
                                 break;
-                            case"":
-                                mRadioGroup.check(R.id.UberBlack);
-                                break;
-                            case"UberXl":
-                                mRadioGroup.check(R.id.UberXl);
+                            case"Hire":
+                                mRadioGroup.check(R.id.limo);
                                 break;
                         }
                     }
