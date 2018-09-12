@@ -89,10 +89,14 @@
     <RelativeLayout
         android:id="@+id/searchcontainer"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="200dp"
         android:layout_marginTop="40dp"
-        android:background="@color/white"
-        android:visibility="visible">
+        android:elevation="10dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"
+android:padding="10dp"
+        android:background="@drawable/bg_white"
+        android:visibility="invisible">
 
         <!--<fragment-->
             <!--android:id="@+id/startsearch"-->

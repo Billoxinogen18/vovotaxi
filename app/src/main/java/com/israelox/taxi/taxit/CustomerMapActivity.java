@@ -383,7 +383,7 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
 
 
         mAutocompleteTextViewStop.setOnItemClickListener(mAutocompleteClickListenerStop);
-        mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1, null, null);
+        mPlaceArrayAdapterStop = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1, null, null);
         mAutocompleteTextViewStop.setAdapter(mPlaceArrayAdapter);
 
 
@@ -759,7 +759,7 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
             = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapterStop.getItem(position);
+            final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
             final String placeId = String.valueOf(item.placeId);
             Log.i(LOG_TAG, "Selected: " + item.description);
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
@@ -788,6 +788,8 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
 
             setLatitSelected(place.getLatLng().latitude);
             setLongitSelected(place.getLatLng().longitude);
+
+
 
 
 
