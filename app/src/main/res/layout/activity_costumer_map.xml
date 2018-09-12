@@ -89,36 +89,59 @@
     <RelativeLayout
         android:id="@+id/searchcontainer"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="130dp"
         android:layout_marginTop="40dp"
         android:background="@color/white"
         android:visibility="visible">
 
-        <fragment
-            android:id="@+id/startsearch"
-            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-            android:layout_width="226dp"
-            android:layout_height="77dp"
+        <!--<fragment-->
+            <!--android:id="@+id/startsearch"-->
+            <!--android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"-->
+            <!--android:layout_width="226dp"-->
+            <!--android:layout_height="77dp"-->
 
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginTop="3dp" />-->
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextViewStart"
+            android:layout_width="match_parent"
             android:layout_alignParentTop="true"
+
+            android:layout_marginTop="3dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="3dp" />
+
+            android:hint="Pickup Point"/>
 
 
 
 
 
 
-        <fragment
-            android:id="@+id/stopsearch"
-            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-            android:layout_width="200dp"
+        <!--<fragment-->
+            <!--android:id="@+id/stopsearch"-->
+            <!--android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"-->
+            <!--android:layout_width="200dp"-->
 
-            android:layout_height="20dp"
-android:layout_marginBottom="3dp"
-            
+            <!--android:layout_height="20dp"-->
+<!--android:layout_marginBottom="3dp"-->
+            <!---->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_alignParentBottom="true" />-->
+
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextViewStop"
+            android:layout_width="match_parent"
+
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true" />
+
+            android:hint="Destination"/>
 
 
     </RelativeLayout>

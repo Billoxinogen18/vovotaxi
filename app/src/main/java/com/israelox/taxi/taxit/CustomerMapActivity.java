@@ -49,6 +49,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -73,6 +75,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -82,6 +86,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -94,6 +99,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -115,10 +121,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CustomerMapActivity extends AppCompatActivity implements OnMapReadyCallback, OnNavigationItemSelectedListener, RoutingListener {
+public class CustomerMapActivity extends AppCompatActivity implements OnMapReadyCallback, OnNavigationItemSelectedListener, RoutingListener ,GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks{
     public double latitude;
     public String ratingso;
     public  String timeso;
+
+
+    private static final String LOG_TAG = "MainActivity";
+    private static final int GOOGLE_API_CLIENT_ID = 0;
+    private AutoCompleteTextView mAutocompleteTextViewStart;
+    private AutoCompleteTextView mAutocompleteTextViewStop;
+    private TextView mNameTextView;
+    private TextView mAddressTextView;
+    private TextView mIdTextView;
+    private TextView mPhoneTextView;
+    private TextView mWebTextView;
+    private TextView mAttTextView;
+    private GoogleApiClient mGoogleApiClient;
+    private PlaceArrayAdapter mPlaceArrayAdapter;
+    private PlaceArrayAdapter mPlaceArrayAdapterStop;
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
+            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+
+
+
 
     public double longitude;
     public LocationManager locationManager;
@@ -204,6 +231,14 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_costumer_map);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(CustomerMapActivity.this)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
+                .addConnectionCallbacks(this)
+                .build();
+
+
         mGeoDataClient = Places.getGeoDataClient(this, null);
 
         // Construct a PlaceDetectionClient.
@@ -218,10 +253,16 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
+        mAutocompleteTextViewStart = (AutoCompleteTextView) findViewById(R.id
+                .autoCompleteTextViewStart);
+        mAutocompleteTextViewStop = (AutoCompleteTextView) findViewById(R.id
+                .autoCompleteTextViewStop);
+
+        mAutocompleteTextViewStart.setThreshold(3);
+        mAutocompleteTextViewStop.setThreshold(3);
 
 
-
-         bodaboda=(Button)findViewById(R.id.bike_button);
+        bodaboda=(Button)findViewById(R.id.bike_button);
         tuktuk=(Button)findViewById(R.id.tuktuk_button);
         taxi=(Button)findViewById(R.id.taxi_button);
         limo=(Button)findViewById(R.id.limo_button);
@@ -238,101 +279,112 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
 
 
 
-        PlaceAutocompleteFragment startsearch= (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.startsearch);
-        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-                .build();
-        startsearch.setHint("Pickup Point");
-
-
-        PlaceAutocompleteFragment stopsearch= (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.stopsearch);
-        AutocompleteFilter typeFilterS = new AutocompleteFilter.Builder()
-                .build();
-        stopsearch.setHint("Destination");
-
-
-
-
-        startsearch.setFilter(typeFilter);
-        startsearch.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-
-                Double latitude=place.getLatLng().latitude;
-                Double longitude=place.getLatLng().longitude;
-
-                setLatitSelected(latitude);
-                setLongitSelected(longitude);
-
-
-//                mMap.addMarker(new MarkerOptions()
-////                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
-//                        .title(place.getName().toString())
-////                            .snippet(feedObj.getString("matime"))
-//                        .snippet(place.getAddress().toString())
+//        PlaceAutocompleteFragment startsearch= (PlaceAutocompleteFragment)
+//                getFragmentManager().findFragmentById(R.id.startsearch);
+//        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+//                .build();
+//        startsearch.setHint("Pickup Point");
 //
-//                        .position(latLng));
-
-
-//                CameraPosition cameraPosition = new CameraPosition.Builder()
-//                        .target(latLng).zoom(13).build();
 //
-//                mMap.animateCamera(CameraUpdateFactory
-//                        .newCameraPosition(cameraPosition));
+//        PlaceAutocompleteFragment stopsearch= (PlaceAutocompleteFragment)
+//                getFragmentManager().findFragmentById(R.id.stopsearch);
+//        AutocompleteFilter typeFilterS = new AutocompleteFilter.Builder()
+//                .build();
+//        stopsearch.setHint("Destination");
+
+
+
+
+//        startsearch.setFilter(typeFilter);
+//        startsearch.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onPlaceSelected(Place place) {
 //
-//                Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(Status status) {
-
-                Toast.makeText(getApplicationContext(),status.toString(),Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-
-
-
-        stopsearch.setFilter(typeFilterS);
-        stopsearch.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-
-                Double latitude=place.getLatLng().latitude;
-                Double longitude=place.getLatLng().longitude;
-
-                setLatitSelectedTwo(latitude);
-                setLongitSelectedTwo(longitude);
-
-                destination = place.getName().toString();
-                destinationLatLng = place.getLatLng();
-//                mMap.addMarker(new MarkerOptions()
-////                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
-//                        .title(place.getName().toString())
-////                            .snippet(feedObj.getString("matime"))
-//                        .snippet(place.getAddress().toString())
+//                Double latitude=place.getLatLng().latitude;
+//                Double longitude=place.getLatLng().longitude;
 //
-//                        .position(latLng));
-
-
-//                CameraPosition cameraPosition = new CameraPosition.Builder()
-//                        .target(latLng).zoom(13).build();
+//                setLatitSelected(latitude);
+//                setLongitSelected(longitude);
 //
-//                mMap.animateCamera(CameraUpdateFactory
-//                        .newCameraPosition(cameraPosition));
 //
-//                Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
-            }
+////                mMap.addMarker(new MarkerOptions()
+//////                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
+////                        .title(place.getName().toString())
+//////                            .snippet(feedObj.getString("matime"))
+////                        .snippet(place.getAddress().toString())
+////
+////                        .position(latLng));
+//
+//
+////                CameraPosition cameraPosition = new CameraPosition.Builder()
+////                        .target(latLng).zoom(13).build();
+////
+////                mMap.animateCamera(CameraUpdateFactory
+////                        .newCameraPosition(cameraPosition));
+////
+////                Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onError(Status status) {
+//
+//                Toast.makeText(getApplicationContext(),status.toString(),Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
 
-            @Override
-            public void onError(Status status) {
 
-                Toast.makeText(getApplicationContext(),status.toString(),Toast.LENGTH_SHORT).show();
 
-            }
-        });
+//
+//        stopsearch.setFilter(typeFilterS);
+//        stopsearch.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onPlaceSelected(Place place) {
+//
+//                Double latitude=place.getLatLng().latitude;
+//                Double longitude=place.getLatLng().longitude;
+//
+//                setLatitSelectedTwo(latitude);
+//                setLongitSelectedTwo(longitude);
+//
+//                destination = place.getName().toString();
+//                destinationLatLng = place.getLatLng();
+////                mMap.addMarker(new MarkerOptions()
+//////                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
+////                        .title(place.getName().toString())
+//////                            .snippet(feedObj.getString("matime"))
+////                        .snippet(place.getAddress().toString())
+////
+////                        .position(latLng));
+//
+//
+////                CameraPosition cameraPosition = new CameraPosition.Builder()
+////                        .target(latLng).zoom(13).build();
+////
+////                mMap.animateCamera(CameraUpdateFactory
+////                        .newCameraPosition(cameraPosition));
+////
+////                Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onError(Status status) {
+//
+//                Toast.makeText(getApplicationContext(),status.toString(),Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+
+
+
+        mAutocompleteTextViewStart.setOnItemClickListener(mAutocompleteClickListener);
+        mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1, null, null);
+        mAutocompleteTextViewStart.setAdapter(mPlaceArrayAdapter);
+
+
+        mAutocompleteTextViewStop.setOnItemClickListener(mAutocompleteClickListenerStop);
+        mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1, null, null);
+        mAutocompleteTextViewStop.setAdapter(mPlaceArrayAdapter);
 
 
 
@@ -457,14 +509,14 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
 
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
                     GeoFire geoFire = new GeoFire(ref);
-                    geoFire.setLocation(userId, new GeoLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+                    geoFire.setLocation(userId, new GeoLocation(latitude, longitude));
 
 
 
 
-
-                     Double lat=mLastLocation.getLatitude();
-                     Double longit=mLastLocation.getLongitude();
+//
+//                     Double lat=mLastLocation.getLatitude();
+//                     Double longit=mLastLocation.getLongitude();
 
                     pickupLocation = new LatLng(latitSelected, longitSelected);
 
@@ -684,6 +736,114 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
 
     }
 
+
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
+            final String placeId = String.valueOf(item.placeId);
+            Log.i(LOG_TAG, "Selected: " + item.description);
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(mGoogleApiClient, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+            Log.i(LOG_TAG, "Fetching details for ID: " + item.placeId);
+        }
+    };
+
+
+
+
+
+    private AdapterView.OnItemClickListener mAutocompleteClickListenerStop
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapterStop.getItem(position);
+            final String placeId = String.valueOf(item.placeId);
+            Log.i(LOG_TAG, "Selected: " + item.description);
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(mGoogleApiClient, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallbackStop);
+            Log.i(LOG_TAG, "Fetching details for ID: " + item.placeId);
+        }
+    };
+
+
+
+
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
+            = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                Log.e(LOG_TAG, "Place query did not complete. Error: " +
+                        places.getStatus().toString());
+                return;
+            }
+            // Selecting the first object buffer.
+            final Place place = places.get(0);
+            CharSequence attributions = places.getAttributions();
+
+
+            setLatitSelected(place.getLatLng().latitude);
+            setLongitSelected(place.getLatLng().longitude);
+
+
+
+
+
+
+
+//            mNameTextView.setText(Html.fromHtml(place.getName() + ""));
+//            mAddressTextView.setText(Html.fromHtml(place.getAddress() + ""));
+//            mIdTextView.setText(Html.fromHtml(place.getId() + ""));
+//            mPhoneTextView.setText(Html.fromHtml(place.getPhoneNumber() + ""));
+//            mWebTextView.setText(place.getWebsiteUri() + "");
+            if (attributions != null) {
+//                mAttTextView.setText(Html.fromHtml(attributions.toString()));
+            }
+        }
+    };
+
+
+
+
+
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallbackStop
+            = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                Log.e(LOG_TAG, "Place query did not complete. Error: " +
+                        places.getStatus().toString());
+                return;
+            }
+            // Selecting the first object buffer.
+            final Place place = places.get(0);
+            CharSequence attributions = places.getAttributions();
+
+
+setLatitSelectedTwo(place.getLatLng().latitude);
+            setLongitSelectedTwo(place.getLatLng().longitude);
+
+
+
+
+
+
+//            mNameTextView.setText(Html.fromHtml(place.getName() + ""));
+//            mAddressTextView.setText(Html.fromHtml(place.getAddress() + ""));
+//            mIdTextView.setText(Html.fromHtml(place.getId() + ""));
+//            mPhoneTextView.setText(Html.fromHtml(place.getPhoneNumber() + ""));
+//            mWebTextView.setText(place.getWebsiteUri() + "");
+            if (attributions != null) {
+//                mAttTextView.setText(Html.fromHtml(attributions.toString()));
+            }
+        }
+    };
+
+
     /*-------------------------------------------- getDriverInfo -----
     |  Function(s) getDriverInfo
     |
@@ -866,6 +1026,47 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
     |                request has it's own unique request code.
     |
     *-------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        Log.i(LOG_TAG, "Google Places API connected.");
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
+                + connectionResult.getErrorCode());
+
+        Toast.makeText(this,
+                "Google Places API connection failed with error code:" +
+                        connectionResult.getErrorCode(),
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mPlaceArrayAdapter.setGoogleApiClient(null);
+        Log.e(LOG_TAG, "Google Places API connection suspended.");
+    }
+
+
+
+
+
     private void checkLocationPermission() {
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
