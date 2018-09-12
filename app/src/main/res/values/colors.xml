@@ -38,6 +38,7 @@
     <color name="bg_main2">#ff67df91</color>
     <color name="bg_register">#ff2e3237</color>
     <color name="black_overlay">#77000000</color>
+    <color name="transpa_overlay">#00000000</color>
     <color name="black_overla">#77CCCCCC</color>
     <color name="blacko">#ff000000</color>
     <color name="colorBlack">#000000</color>
