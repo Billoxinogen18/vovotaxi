@@ -458,27 +458,9 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
                 }else{
 
 
+                    destinationLatLng=new LatLng(latitSelectedTwo,longitSelectedTwo);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    Toast.makeText(CustomerMapActivity.this, longitSelectedTwo+" "+latitSelectedTwo, Toast.LENGTH_SHORT).show();
 
 
                         Log.e("TAG", "GPS is on");
@@ -486,8 +468,8 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
 //                        longitude = location.getLongitude();
 
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                new LatLng(latitude,
-                                        longitude), 15));
+                                new LatLng(latitSelected,
+                                        longitSelected), 15));
 
 
 
@@ -509,7 +491,7 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
 
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
                     GeoFire geoFire = new GeoFire(ref);
-                    geoFire.setLocation(userId, new GeoLocation(latitude, longitude));
+                    geoFire.setLocation(userId, new GeoLocation(latitSelected, longitSelected));
 
 
 
@@ -1120,6 +1102,16 @@ setLatitSelectedTwo(place.getLatLng().latitude);
         GeoFire geoFire = new GeoFire(driverLocation);
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastLocation.getLongitude(), mLastLocation.getLatitude()), 999999999);
 
+
+
+
+
+//
+//        GeoQuery geoQuery = geoFire.queryAtLocation(ne\w GeoLocation(latitSelected, long), 999999999);
+
+
+
+
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
@@ -1130,6 +1122,21 @@ setLatitSelectedTwo(place.getLatLng().latitude);
                 }
 
                 LatLng driverLocation = new LatLng(location.latitude, location.longitude);
+
+
+//                LatLng driverLocation = new LatLng(1.2807,36.7817);
+
+
+
+
+
+
+
+
+
+
+
+
 
                 Marker mDriverMarker = mMap.addMarker(new MarkerOptions().position(driverLocation).title(key).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_car)));
                 mDriverMarker.setTag(key);
@@ -1245,7 +1252,7 @@ setLatitSelectedTwo(place.getLatLng().latitude);
 
 
     private List<Polyline> polylines;
-    private static final int[] COLORS = new int[]{R.color.primary_dark_material_light};
+    private static final int[] COLORS = new int[]{R.color.red_btn_bg_pressed_color};
 
     @Override
     public void onRoutingFailure(RouteException e) {
