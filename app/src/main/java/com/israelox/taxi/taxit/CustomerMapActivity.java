@@ -1121,6 +1121,8 @@ setLatitSelectedTwo(place.getLatLng().latitude);
                         return;
                 }
 
+
+
                 LatLng driverLocation = new LatLng(location.latitude, location.longitude);
 
 
