@@ -130,6 +130,8 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
     public double latitude;
     public String ratingso;
     public  String timeso;
+    private int distance;
+    private int duration;
 
 
     private static final String LOG_TAG = "MainActivity";
@@ -192,13 +194,14 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
     private LinearLayout mDriverInfo;
 
     private ImageView mDriverProfileImage;
+    private GoogleMap mMaptwo;
 
 
 
     private TextView mDriverName, mDriverPhone, mDriverCar;
 
     private RadioGroup mRadioGroup;
-
+private GoogleMap mMapfa;
     private RatingBar mRatingBar;
 
 
@@ -245,6 +248,7 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
            longitudess = Double.parseDouble(fia.getStringExtra("longitsa"));
            latitudesstwo = Double.parseDouble(fia.getStringExtra("latitsatwo"));
            longitudesstwo = Double.parseDouble(fia.getStringExtra("longistatwo"));
+//           book();
            Toast.makeText(getApplicationContext(), latitudess+" "+longitudess, Toast.LENGTH_SHORT).show();
        }
 
@@ -282,6 +286,11 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
         setContentView(R.layout.activity_costumer_map);
 
 
+
+
+
+
+
         LatLangs latLangs=new LatLangs();
         Double latit=latLangs.getLongitSelected();
 
@@ -293,7 +302,7 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
         {
 
 
-            book();
+//            book();
         }
 
 
@@ -342,6 +351,12 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
         setSupportActionBar(toolbar);
         searchcontianer = (RelativeLayout) findViewById(R.id.searchcontainer);
         requestone = (Button) findViewById(R.id.requestone);
+
+
+
+
+
+
 
 
 
@@ -488,6 +503,7 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
 
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         mRadioGroup.check(R.id.bike_button);
+        mMap=mMapfa;
 
 
 
@@ -576,7 +592,7 @@ mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
 
 
 
-                searchcontianer.setVisibility(View.INVISIBLE);
+//                searchcontianer.setVisibility(View.INVISIBLE);
 
 
 
@@ -1055,7 +1071,7 @@ setLatitSelectedTwo(place.getLatLng().latitude);
         if (mDriverMarker != null){
             mDriverMarker.remove();
         }
-        mRequest.setText("call Vovo Ride");
+//        mRequest.setText("call Vovo Ride");
 
         mDriverInfo.setVisibility(View.GONE);
         mDriverName.setText("");
@@ -1096,6 +1112,169 @@ setLatitSelectedTwo(place.getLatLng().latitude);
         getDeviceLocation();
 
 
+        Intent fia=getIntent();
+        String fias=getIntent().getStringExtra("latitsa");
+        if(fias!=null) {
+            latitudess = Double.parseDouble(fia.getStringExtra("latitsa"));
+            longitudess = Double.parseDouble(fia.getStringExtra("longitsa"));
+            latitudesstwo = Double.parseDouble(fia.getStringExtra("latitsatwo"));
+            longitudesstwo = Double.parseDouble(fia.getStringExtra("longistatwo"));
+//            book();
+
+
+
+
+
+
+
+
+
+
+            LatLangs lats=new LatLangs();
+
+            Double latits=lats.getLatitSelected();
+            Double longits=lats.getLongitSelected();
+            Double latitstwo=lats.getLatitSelectedTwo();
+            Double longitsTwo=lats.getLongitSelectedTwo();
+
+
+
+
+
+
+
+            setLatitSelected(latits);
+            setLongitSelected(longits);
+            setLongitSelectedTwo(longitsTwo);
+            setLatitSelectedTwo(latitstwo);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        searchcontianer.setVisibility(View.INVISIBLE);
+
+
+
+
+
+            if (requestBol){
+                endRide();
+//                mRequest.setVisibility(View.INVISIBLE);
+//                requestone.setVisibility(View.VISIBLE);
+
+
+            }else{
+
+//            LatLangs cooded=new LatLangs();
+//            Double latitudes=cooded.getLatitSelectedTwo();
+//            Double longitudes=cooded.getLongitSelectedTwo();
+//            Double latitso=cooded.getLatitSelected();
+                //           Double longitso=cooded.getLongitSelected();
+
+
+                destinationLatLng=new LatLng(latitudesstwo,longitudesstwo);
+
+//                Toast.makeText(CustomerMapActivity.this, latitudesstwo+" "+longitudesstwo, Toast.LENGTH_SHORT).show();
+
+
+                Log.e("TAG", "GPS is on");
+//                        latitude = location.getLatitude();
+//                        longitude = location.getLongitude();
+
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(latitudess,
+                                longitudess), 15));
+
+
+
+
+
+                int selectId = mRadioGroup.getCheckedRadioButtonId();
+
+                final RadioButton radioButton = (RadioButton) findViewById(selectId);
+
+                if (radioButton.getHint() == null){
+                    return;
+                }
+
+                requestService = radioButton.getHint().toString();
+
+                requestBol = true;
+
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
+                GeoFire geoFire = new GeoFire(ref);
+                geoFire.setLocation(userId, new GeoLocation(latitudess, longitudess));
+
+
+
+
+//
+//                     Double lat=mLastLocation.getLatitude();
+//                     Double longit=mLastLocation.getLongitude();
+
+                pickupLocation = new LatLng(latitudess, longitudess);
+
+
+
+
+
+
+
+
+
+
+
+
+
+                pickupMarker = mMap.addMarker(new MarkerOptions().position(pickupLocation).title("Pickup Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_pickup)));
+
+
+
+
+
+
+
+
+
+
+
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+
+                mRequest.setText("Getting your Driver..");
+
+                getClosestDriver();
+
+
+
+                getRouteToMarker(destinationLatLng);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//            Toast.makeText(getApplicationContext(), latitudess+" "+longitudess, Toast.LENGTH_SHORT).show();
+        }
 
 
 
@@ -1276,6 +1455,41 @@ setLatitSelectedTwo(place.getLatLng().latitude);
                 mDriverMarker.setTag(key);
 
 
+                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                    @Override
+                    public View getInfoWindow(Marker arg0) {
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker arg0) {
+
+                        View v = getLayoutInflater().inflate(R.layout.customlayout, null);
+
+                        TextView tLocation = (TextView) v.findViewById(R.id.location);
+
+                        TextView tSnippet = (TextView) v.findViewById(R.id.population);
+
+                         tLocation.setText("Distance "+distance);
+                         tSnippet.setText(duration+" away");
+
+//                        Toast.makeText(WanMaps.this, "Title is "+titleso, Toast.LENGTH_SHORT).show();
+
+
+//                            titleso=arg0.getTitle();
+//
+//
+//
+//
+//                            contentso=tSnippet.toString();
+                        return v;
+
+                    }
+                });
+
+
+
 
 
 
@@ -1388,12 +1602,12 @@ setLatitSelectedTwo(place.getLatLng().latitude);
 
 
     private void getRouteToMarker(LatLng destinationLatLng) {
-        if (destinationLatLng != null && latitSelected != null&& longitSelected != null) {
+        if (destinationLatLng != null && latitudess != null&& latitudess != null) {
             Routing routing = new Routing.Builder()
                     .travelMode(AbstractRouting.TravelMode.DRIVING)
                     .withListener(this)
                     .alternativeRoutes(false)
-                    .waypoints(new LatLng(latitSelected, longitSelected), destinationLatLng)
+                    .waypoints(new LatLng(latitudess, longitudess), destinationLatLng)
                     .build();
             routing.execute();
         }
@@ -1440,6 +1654,20 @@ setLatitSelectedTwo(place.getLatLng().latitude);
             polyOptions.addAll(route.get(i).getPoints());
             Polyline polyline = mMap.addPolyline(polyOptions);
             polylines.add(polyline);
+            int distances=route.get(i).getDistanceValue();
+            int durations= route.get(i).getDurationValue();
+
+            setDistance(distances);
+            setDuration(durations);
+
+
+
+
+
+
+
+
+
 
             Toast.makeText(getApplicationContext(), "Route " + (i + 1) + ": distance - " + route.get(i).getDistanceValue() + ": duration - " + route.get(i).getDurationValue(), Toast.LENGTH_SHORT).show();
         }
@@ -1557,7 +1785,7 @@ setLatitSelectedTwo(place.getLatLng().latitude);
 
 
 
-        searchcontianer.setVisibility(View.INVISIBLE);
+//        searchcontianer.setVisibility(View.INVISIBLE);
 
 
 
@@ -1565,8 +1793,8 @@ setLatitSelectedTwo(place.getLatLng().latitude);
 
         if (requestBol){
             endRide();
-            mRequest.setVisibility(View.INVISIBLE);
-            requestone.setVisibility(View.VISIBLE);
+//            mRequest.setVisibility(View.INVISIBLE);
+//            requestone.setVisibility(View.VISIBLE);
 
 
         }else{
@@ -1587,7 +1815,7 @@ setLatitSelectedTwo(place.getLatLng().latitude);
 //                        latitude = location.getLatitude();
 //                        longitude = location.getLongitude();
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+            mMapfa.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(latitudess,
                             longitudess), 15));
 
@@ -1791,6 +2019,19 @@ setLatitSelectedTwo(place.getLatLng().latitude);
     {
 
         this.longitude=longitude;
+    }
+    private void setDistance(int distance)
+    {
+
+        this.distance=distance;
+
+    }
+
+    private void setDuration(int duration)
+    {
+
+        this.duration=duration;
+
     }
 
 }

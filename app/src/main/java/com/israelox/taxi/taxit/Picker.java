@@ -214,10 +214,10 @@ callvovo.setOnClickListener(new View.OnClickListener() {
     public void onClick(View v) {
 
 Intent i=new Intent(getActivity(), CustomerMapActivity.class);
-i.putExtra("latitsa", "Bill");
-i.putExtra("longitsa", longitsSelected);
-i.putExtra("latitsatwo", longitsSelectedTwo);
-        i.putExtra("longistatwo", longitsSelectedTwo);
+i.putExtra("latitsa", latitsSelected.toString());
+i.putExtra("longitsa", longitsSelected.toString());
+i.putExtra("latitsatwo", longitsSelectedTwo.toString());
+        i.putExtra("longistatwo", longitsSelectedTwo.toString());
 
 //       ((CustomerMapActivity)getActivity()).book();
 
@@ -377,8 +377,8 @@ i.putExtra("latitsatwo", longitsSelectedTwo);
 
 
 
-            Toast.makeText(getActivity(), latitsSelected+" "+longitsSelected, Toast.LENGTH_SHORT).show();
-
+//            Toast.makeText(getActivity(), latitsSelected+" "+longitsSelected, Toast.LENGTH_SHORT).show();
+//
 
 
 
@@ -431,8 +431,8 @@ i.putExtra("latitsatwo", longitsSelectedTwo);
 
 
 
-            Toast.makeText(getActivity(), latitsSelectedTwo+" "+longitsSelectedTwo, Toast.LENGTH_SHORT).show();
-
+//            Toast.makeText(getActivity(), latitsSelectedTwo+" "+longitsSelectedTwo, Toast.LENGTH_SHORT).show();
+//
 
 
 
@@ -509,6 +509,7 @@ i.putExtra("latitsatwo", longitsSelectedTwo);
     {
 
         this.longitsSelectedTwo=longitsSelectedTwo;
+
     }
 
 
