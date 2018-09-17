@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="gallery_white">#FFf4f4f4</color>
+    <color name="gallery_white">#fff4f4f4</color>
     <color name="gallery_grey">#FFe5e5e5</color>
     <color name="grey_light_light">#FFCCCCCC</color>
 
@@ -39,6 +39,7 @@
     <color name="bg_register">#ff2e3237</color>
     <color name="black_overlay">#77000000</color>
     <color name="transpa_overlay">#00000000</color>
+    <color name="white_overla">#99ffffff</color>
     <color name="black_overla">#77CCCCCC</color>
     <color name="blacko">#ff000000</color>
     <color name="colorBlack">#000000</color>

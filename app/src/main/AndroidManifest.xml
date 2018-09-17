@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-
         android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,7 +27,7 @@
             android:stopWithTask="false" />
 
         <activity
-            android:name="com.israelox.taxi.taxit.login"
+            android:name=".login"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,16 +36,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.israelox.taxi.taxit.Passenger"
+            android:name=".Passenger"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="com.israelox.taxi.taxit.Driver"
+            android:name=".Driver"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="com.israelox.taxi.taxit.PassengerMainActivity"
+            android:name=".PassengerMainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="com.israelox.taxi.taxit.DriverMainActivity"
+            android:name=".DriverMainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -61,50 +60,49 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.israelox.taxi.taxit.DriverMapActivity"
+            android:name=".DriverMapActivity"
             android:label="@string/title_activity_driver_map"
-         android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="com.israelox.taxi.taxit.CustomerMapActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.israelox.taxi.taxit.CustomerSettingsActivity"
+            android:name=".CustomerMapActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.israelox.taxi.taxit.DriverSettingsActivity"
+            android:name=".CustomerSettingsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.israelox.taxi.taxit.HistoryActivity"
+            android:name=".DriverSettingsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.israelox.taxi.taxit.HistorySingleActivity"
+            android:name=".HistoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.israelox.taxi.taxit.LoginSignUpDriver"
+            android:name=".HistorySingleActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name="com.israelox.taxi.taxit.LoginSignUpPassenger"
+            android:name=".LoginSignUpDriver"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name="com.israelox.taxi.taxit.RealLogConsumer"
+            android:name=".LoginSignUpPassenger"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name="com.israelox.taxi.taxit.RealLogDriver"
+            android:name=".RealLogConsumer"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RealLogDriver"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name="com.israelox.taxi.taxit.LocationService" />
+        <service android:name=".LocationService" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.israelox.taxi.taxit.MainMaps"
+            android:name=".MainMaps"
             android:label="@string/title_activity_main_maps" />
-        <activity android:name=".FragmentsPractice"></activity>
+        <activity android:name=".FragmentsPractice" />
+        <activity android:name=".PickLocation"
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
     </application>
 
 </manifest>

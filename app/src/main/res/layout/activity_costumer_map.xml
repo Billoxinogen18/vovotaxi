@@ -13,7 +13,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    android:id="@+id/fragpicker"
      >
+
 
 
     <fragment
@@ -163,9 +166,11 @@ android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@android:color/white"
+            android:background="@drawable/bg_white"
+            android:elevation="10dp"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:layout_marginBottom="20dp"
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/driverProfileImage"
@@ -212,9 +217,13 @@ android:padding="10dp"
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="370dp"
             android:layout_height="110dp"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
             android:background="@drawable/bottom_bit"
+            android:elevation="10dp"
 
             android:orientation="vertical">
 
@@ -225,11 +234,23 @@ android:padding="10dp"
             <LinearLayout
 
                 android:layout_width="match_parent"
+                android:textAlignment="center"
+
+                android:gravity="center_horizontal"
 
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
 
 
                 android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="390dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                android:padding="3dp">
 
                 <TextView
                     android:id="@+id/UberX"
@@ -281,6 +302,7 @@ android:padding="10dp"
                       android:textAlignment="center"
                     android:text="Limo" />
             </LinearLayout>
+            </LinearLayout>
 
 
 
@@ -330,75 +352,93 @@ android:padding="10dp"
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:textAlignment="center"
+    android:foregroundGravity="center_horizontal"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
     >
-<RadioGroup
-    android:id="@+id/radioGroup"
-    android:layout_width="wrap_content"
-    android:layout_marginTop="8dp"
-    android:orientation="horizontal"
-    android:layout_height="wrap_content">
 
 
+    <LinearLayout
+        android:layout_width="390dp"
+        android:layout_height="75dp"
 
-            <RadioButton
-                android:id="@+id/bike_button"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+        android:layout_marginTop="5dp"
 
-                android:layout_height="50dp"
-                android:layout_margin="26dp"
-                android:foreground="?attr/selectableItemBackground"
-                android:clickable="true"
-               android:hint="Bike"
+        android:textAlignment="center">
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
 
-                android:textColorHint="@color/transpa_overlay"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
 
-                android:layout_centerVertical="true"
+        <RadioButton
+            android:id="@+id/bike_button"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:button="@android:color/transparent"
+            android:layout_centerVertical="true"
 
-                android:background="@drawable/motor_bike_icon" />
+            android:layout_margin="26dp"
+            android:layout_weight="1"
+            android:background="@drawable/motor_bike_icon"
+            android:clickable="true"
 
-    <RadioButton
-        android:id="@+id/tuktuk_button"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:hint="TukTuk"
-        android:textColorHint="@color/transpa_overlay"
-        android:layout_margin="26dp"
-        android:layout_centerVertical="true"
+            android:foreground="@drawable/radioselector"
 
-        android:foreground="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:layout_weight="1"
+            android:hint="Bike"
 
-        android:background="@drawable/tuktuk_icon" />
+            android:textColorHint="@color/transpa_overlay" />
 
-            <RadioButton
-                android:id="@+id/taxi_button"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="50dp"
-                android:layout_margin="26dp"
-                android:textColorHint="@color/transpa_overlay"
-                android:hint="Taxi"
-                android:foreground="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:background="@drawable/taxi_icon_m" />
+        <RadioButton
+            android:id="@+id/tuktuk_button"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:button="@android:color/transparent"
+            android:layout_margin="26dp"
+            android:layout_weight="1"
+            android:background="@drawable/tuktuk_icon"
 
-            <RadioButton
-                android:id="@+id/limo_button"
+            android:clickable="true"
+            android:foreground="@drawable/radioselector"
+            android:hint="TukTuk"
 
-                android:layout_height="50dp"
-                android:layout_margin="26dp"
-                android:textColorHint="@color/transpa_overlay"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:hint="Hire"
-                android:foreground="?attr/selectableItemBackground"
-                android:clickable="true"
+            android:textColorHint="@color/transpa_overlay" />
 
-                android:background="@drawable/limo_round_small" />
+        <RadioButton
+            android:id="@+id/taxi_button"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_margin="26dp"
+            android:button="@android:color/transparent"
+            android:layout_weight="1"
+            android:background="@drawable/taxi_icon_m"
+            android:clickable="true"
+            android:foreground="@drawable/radioselector"
+            android:hint="Taxi"
+            android:textColorHint="@color/transpa_overlay" />
 
-</RadioGroup>
+        <RadioButton
+            android:id="@+id/limo_button"
+
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_margin="26dp"
+            android:button="@android:color/transparent"
+            android:layout_weight="1"
+            android:background="@drawable/limo_round_small"
+            android:clickable="true"
+            android:foreground="@drawable/radioselector"
+            android:hint="Hire"
+
+            android:textColorHint="@color/transpa_overlay" />
+        </RadioGroup>
+    </LinearLayout>
+
 </LinearLayout>
             <Button
                 android:id="@+id/request"

@@ -27,11 +27,19 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -91,10 +99,14 @@ import java.util.Map;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-public class DriverMapActivity extends FragmentActivity implements OnMapReadyCallback, RoutingListener {
+public class DriverMapActivity extends AppCompatActivity implements OnMapReadyCallback, RoutingListener, NavigationView.OnNavigationItemSelectedListener {
 
     private GeoDataClient mGeoDataClient;
     private PlaceDetectionClient mPlaceDetectionClient;
+
+    NavigationView navigationView;
+    Toolbar toolbar = null;
+
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -204,6 +216,8 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
 
     private ImageView settings;
     private ImageView inbox;
+    DrawerLayout drawer;
+
     private ImageView message;
     private ImageView location;
     private Button logout;
@@ -289,6 +303,23 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
         // Retrieve the content view that renders the map.
         setContentView(R.layout.driver_map);
 
+
+
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+
+        setSupportActionBar(toolbar);
+
+
+        this.drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, this.drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        this.drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        this.navigationView = (NavigationView) findViewById(R.id.nav_view);
+        this.navigationView.setNavigationItemSelectedListener(this);
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         // Construct a GeoDataClient.
         mGeoDataClient = Places.getGeoDataClient(this, null);
 
@@ -369,10 +400,10 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
         });
 
 
-        mSettings = (Button) findViewById(R.id.settings);
-        mLogout = (Button) findViewById(R.id.logout);
+//        mSettings = (Button) findViewById(R.id.settings);
+//        mLogout = (Button) findViewById(R.id.logout);
         mRideStatus = (Button) findViewById(R.id.rideStatus);
-        mHistory = (Button) findViewById(R.id.history);
+//        mHistory = (Button) findViewById(R.id.history);
         mRideStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -394,44 +425,44 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
             }
         });
 
-        mLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isLoggingOut = true;
-
-                disconnectDriver();
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("STATEDRIVE", "Passenge").clear();
-
-                File sharedPreferenceFile = new File("/data/data/"+ getPackageName()+ "/shared_prefs/");
-                File[] listFiles = sharedPreferenceFile.listFiles();
-                for (File file : listFiles) {
-                    file.delete();
-                }
-
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(DriverMapActivity.this, LoginSignUpDriver.class);
-                startActivity(intent);
-                finish();
-                return;
-            }
-        });
-        mSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DriverMapActivity.this, DriverSettingsActivity.class);
-                startActivity(intent);
-                return;
-            }
-        });
-        mHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DriverMapActivity.this, HistoryActivity.class);
-                intent.putExtra("customerOrDriver", "Drivers");
-                startActivity(intent);
-                return;
-            }
-        });
+//        mLogout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                isLoggingOut = true;
+//
+//                disconnectDriver();
+//                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("STATEDRIVE", "Passenge").clear();
+//
+//                File sharedPreferenceFile = new File("/data/data/"+ getPackageName()+ "/shared_prefs/");
+//                File[] listFiles = sharedPreferenceFile.listFiles();
+//                for (File file : listFiles) {
+//                    file.delete();
+//                }
+//
+//                FirebaseAuth.getInstance().signOut();
+//                Intent intent = new Intent(DriverMapActivity.this, login.class);
+//                startActivity(intent);
+//                finish();
+//                return;
+//            }
+//        });
+//        mSettings.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(DriverMapActivity.this, DriverSettingsActivity.class);
+//                startActivity(intent);
+//                return;
+//            }
+//        });
+//        mHistory.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(DriverMapActivity.this, HistoryActivity.class);
+//                intent.putExtra("customerOrDriver", "Drivers");
+//                startActivity(intent);
+//                return;
+//            }
+//        });
         getAssignedCustomer();
     }
 
@@ -743,7 +774,7 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
 
 
     private List<Polyline> polylines;
-    private static final int[] COLORS = new int[]{R.color.primary_dark_material_light};
+    private static final int[] COLORS = new int[]{R.color.linkedin};
 
     @Override
     public void onRoutingFailure(RouteException e) {
@@ -923,6 +954,14 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
 
+
+
+                    setLatitSelected(latitude);
+                    setLongitSelected(longitSelected);
+
+
+
+
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                             new LatLng(latitude,
                                     longitude), DEFAULT_ZOOM));
@@ -1098,6 +1137,31 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
         }
     }
 
+
+
+
+
+
+    private void setLongitSelected(Double longitSelected)
+    {
+
+        this.longitSelected=longitSelected;
+
+
+    }
+
+
+    private void setLatitSelected(Double latitSelected)
+    {
+
+        this.latitSelected=latitSelected;
+
+
+    }
+
+
+
+
     /**
      * Displays a form allowing the user to select a place from a list of likely places.
      */
@@ -1154,6 +1218,111 @@ public class DriverMapActivity extends FragmentActivity implements OnMapReadyCal
             Log.e("Exception: %s", e.getMessage());
         }
     }
+
+
+    private void logout()
+    {
+
+
+
+        isLoggingOut = true;
+
+        disconnectDriver();
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("STATEDRIVE", "Driver").clear();
+
+        File sharedPreferenceFile = new File("/data/data/"+ getPackageName()+ "/shared_prefs/");
+        File[] listFiles = sharedPreferenceFile.listFiles();
+        for (File file : listFiles) {
+            file.delete();
+        }
+
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(DriverMapActivity.this, login.class);
+        startActivity(intent);
+        finish();
+        return;
+    }
+
+    private void history()
+    {
+
+
+        Intent intent = new Intent(DriverMapActivity.this, HistoryActivity.class);
+        intent.putExtra("customerOrDriver", "Drivers");
+        startActivity(intent);
+        return;
+    }
+
+    private void settings()
+    {
+
+        Intent intent = new Intent(DriverMapActivity.this, DriverSettingsActivity.class);
+        startActivity(intent);
+        return;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_landing:
+               settings();
+                break;
+
+            case R.id.nav_invite:
+              history();
+                break;
+
+            case R.id.nav_Accounts:
+
+               logout();
+
+
+
+
+
+
+                break;
+            case R.id.nav_about:
+//                startActivity(new Intent(this, About.class));
+                break;
+//            case R.id.blu_chat:
+//                startActivity(new Intent(this, NairobiOnTheGo.class));
+//                break;
+        }
+
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer((int) GravityCompat.START);
+        return true;
+    }
+
 
 }
 

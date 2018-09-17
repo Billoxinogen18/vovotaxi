@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gallery_white"
+    tools:context=".PickLocation">
+    <RelativeLayout
+        android:id="@+id/searchcontainer"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="40dp"
+
+        android:elevation="10dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"
+        android:padding="10dp"
+        android:background="@drawable/bg_white"
+        android:visibility="visible">
+
+        <!--<fragment-->
+        <!--android:id="@+id/startsearch"-->
+        <!--android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"-->
+        <!--android:layout_width="226dp"-->
+        <!--android:layout_height="77dp"-->
+
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="3dp" />-->
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextViewStart"
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+
+            android:layout_marginTop="3dp"
+            android:layout_height="wrap_content"
+            android:elevation="12dp"
+            android:drawableLeft="@drawable/placeholder"
+            android:drawablePadding="5dp"
+
+            android:paddingLeft="2dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:layout_centerHorizontal="true"
+
+            android:hint="Pickup Point"/>
+
+
+
+
+
+
+        <!--<fragment-->
+        <!--android:id="@+id/stopsearch"-->
+        <!--android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"-->
+        <!--android:layout_width="200dp"-->
+
+        <!--android:layout_height="20dp"-->
+        <!--android:layout_marginBottom="3dp"-->
+        <!---->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_alignParentBottom="true" />-->
+
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextViewStop"
+            android:layout_width="match_parent"
+
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content"
+            android:elevation="12dp"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@drawable/pin"
+
+            android:paddingLeft="2dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:layout_centerHorizontal="true"
+
+            android:hint="Destination"/>
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/callvovo"
+        android:layout_width="180dp"
+        android:layout_height="30dp"
+
+        android:background="@drawable/bg_roundblack_modified"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="10dp"
+        android:text="Call Vovo Ride" />
+
+
+</RelativeLayout>

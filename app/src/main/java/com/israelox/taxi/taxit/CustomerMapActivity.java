@@ -25,6 +25,8 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -112,6 +114,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.israelox.taxi.taxit.Data.LatLangs;
 
 
 import java.io.File;
@@ -120,9 +123,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.DoubleUnaryOperator;
 
 public class CustomerMapActivity extends AppCompatActivity implements OnMapReadyCallback, OnNavigationItemSelectedListener, RoutingListener ,GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks{
+        GoogleApiClient.ConnectionCallbacks, Picker.OnDataPass{
     public double latitude;
     public String ratingso;
     public  String timeso;
@@ -139,6 +143,10 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
     private TextView mWebTextView;
     private TextView mAttTextView;
     private GoogleApiClient mGoogleApiClient;
+    private Double latitudess;
+    private Double longitudess;
+    private Double latitudesstwo;
+    private Double longitudesstwo;
     private PlaceArrayAdapter mPlaceArrayAdapter;
     private PlaceArrayAdapter mPlaceArrayAdapterStop;
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
@@ -228,17 +236,76 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
 
 
     @Override
+    public void onResume(){
+        super.onResume();
+       Intent fia=getIntent();
+         String fias=getIntent().getStringExtra("latitsa");
+       if(fias!=null) {
+           latitudess = Double.parseDouble(fia.getStringExtra("latitsa"));
+           longitudess = Double.parseDouble(fia.getStringExtra("longitsa"));
+           latitudesstwo = Double.parseDouble(fia.getStringExtra("latitsatwo"));
+           longitudesstwo = Double.parseDouble(fia.getStringExtra("longistatwo"));
+           Toast.makeText(getApplicationContext(), latitudess+" "+longitudess, Toast.LENGTH_SHORT).show();
+       }
+
+
+    }
+
+
+
+    @Override
+    public void onDataPass(Double latitudess, Double longitudess, Double latitudesstwo, Double longitudesstwo) {
+
+
+        this.latitudess=latitudess; this.longitudess=longitudess; this.latitudesstwo=latitudesstwo; this.longitudesstwo=longitudesstwo;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_costumer_map);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(CustomerMapActivity.this)
-                .addApi(Places.GEO_DATA_API)
-                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
-                .addConnectionCallbacks(this)
-                .build();
+
+        LatLangs latLangs=new LatLangs();
+        Double latit=latLangs.getLongitSelected();
+
+        Double longit=latLangs.getLatitSelected();
 
 
+        if(latitudess!=null&&longitudess!=null)
+
+        {
+
+
+            book();
+        }
+
+
+
+
+//        mGoogleApiClient = new GoogleApiClient.Builder(CustomerMapActivity.this)
+//                .addApi(Places.GEO_DATA_API)
+//                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
+//                .addConnectionCallbacks(this)
+//                .build();
+//
+//
         mGeoDataClient = Places.getGeoDataClient(this, null);
 
         // Construct a PlaceDetectionClient.
@@ -423,6 +490,48 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
         mRadioGroup.check(R.id.bike_button);
 
 
+
+mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+
+
+
+                // checkedId is the RadioButton selected
+
+
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Bundle bundle = new Bundle();
+                int selectId = mRadioGroup.getCheckedRadioButtonId();
+
+                final RadioButton radioButton = (RadioButton) findViewById(selectId);
+
+                if (radioButton.getHint() == null){
+                    return;
+                }
+
+                requestService = radioButton.getHint().toString();
+
+                bundle.putString("Service", requestService);
+
+
+                Picker fragment = new Picker();
+                fragment.setArguments(bundle);
+                fragmentTransaction.add(R.id.fragpicker, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+
+
+
+            }
+        });
+
+
         mRequest = (Button) findViewById(R.id.request);
 
 
@@ -436,9 +545,33 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
             }
         });
 
+//        mRequest.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+
         mRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -701,7 +834,7 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
                     if (distance<100){
                         mRequest.setText("Driver's Here");
                     }else{
-                        mRequest.setText("Driver Found: " + String.valueOf(distance));
+                        mRequest.setText("Driver is " + String.valueOf(distance)+"Kilometres away from you.");
                     }
 
 
@@ -1142,6 +1275,24 @@ setLatitSelectedTwo(place.getLatLng().latitude);
                 Marker mDriverMarker = mMap.addMarker(new MarkerOptions().position(driverLocation).title(key).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_car)));
                 mDriverMarker.setTag(key);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 markers.add(mDriverMarker);
 
 
@@ -1370,6 +1521,146 @@ setLatitSelectedTwo(place.getLatLng().latitude);
         return true;
     }
 
+
+    public void book()
+    {
+
+
+        LatLangs lats=new LatLangs();
+
+        Double latits=lats.getLatitSelected();
+        Double longits=lats.getLongitSelected();
+        Double latitstwo=lats.getLatitSelectedTwo();
+        Double longitsTwo=lats.getLongitSelectedTwo();
+
+
+
+
+
+
+
+        setLatitSelected(latits);
+        setLongitSelected(longits);
+        setLongitSelectedTwo(longitsTwo);
+        setLatitSelectedTwo(latitstwo);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        searchcontianer.setVisibility(View.INVISIBLE);
+
+
+
+
+
+        if (requestBol){
+            endRide();
+            mRequest.setVisibility(View.INVISIBLE);
+            requestone.setVisibility(View.VISIBLE);
+
+
+        }else{
+
+//            LatLangs cooded=new LatLangs();
+//            Double latitudes=cooded.getLatitSelectedTwo();
+//            Double longitudes=cooded.getLongitSelectedTwo();
+//            Double latitso=cooded.getLatitSelected();
+ //           Double longitso=cooded.getLongitSelected();
+
+
+            destinationLatLng=new LatLng(latitudesstwo,longitudesstwo);
+
+            Toast.makeText(CustomerMapActivity.this, latitudesstwo+" "+longitudesstwo, Toast.LENGTH_SHORT).show();
+
+
+            Log.e("TAG", "GPS is on");
+//                        latitude = location.getLatitude();
+//                        longitude = location.getLongitude();
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(latitudess,
+                            longitudess), 15));
+
+
+
+
+
+            int selectId = mRadioGroup.getCheckedRadioButtonId();
+
+            final RadioButton radioButton = (RadioButton) findViewById(selectId);
+
+            if (radioButton.getHint() == null){
+                return;
+            }
+
+            requestService = radioButton.getHint().toString();
+
+            requestBol = true;
+
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
+            GeoFire geoFire = new GeoFire(ref);
+            geoFire.setLocation(userId, new GeoLocation(latitudess, longitudess));
+
+
+
+
+//
+//                     Double lat=mLastLocation.getLatitude();
+//                     Double longit=mLastLocation.getLongitude();
+
+            pickupLocation = new LatLng(latitudess, longitudess);
+
+
+
+
+
+
+
+
+
+
+
+
+
+            pickupMarker = mMap.addMarker(new MarkerOptions().position(pickupLocation).title("Pickup Here").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_pickup)));
+
+
+
+
+
+
+
+
+
+
+
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+
+            mRequest.setText("Getting your Driver..");
+
+            getClosestDriver();
+
+
+
+            getRouteToMarker(destinationLatLng);
+        }
+
+
+
+
+    }
 
 
 
