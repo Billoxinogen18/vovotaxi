@@ -477,7 +477,7 @@ android:padding="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:textColor="@color/blacko"
-                android:text="Book"
+                android:text="Vovo Ride"
                />
 
         </RelativeLayout>

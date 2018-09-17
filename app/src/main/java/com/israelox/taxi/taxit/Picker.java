@@ -182,7 +182,9 @@ public class Picker extends Fragment implements
 
        View rootView=inflater.inflate(R.layout.fragment_picker, container, false);
 
-        String service = getArguments().getString("Service");
+        final String service = getArguments().getString("Service");
+
+
 
 
 
@@ -214,6 +216,8 @@ callvovo.setOnClickListener(new View.OnClickListener() {
     public void onClick(View v) {
 
 Intent i=new Intent(getActivity(), CustomerMapActivity.class);
+
+i.putExtra("Services", service);
 i.putExtra("latitsa", latitsSelected.toString());
 i.putExtra("longitsa", longitsSelected.toString());
 i.putExtra("latitsatwo", longitsSelectedTwo.toString());

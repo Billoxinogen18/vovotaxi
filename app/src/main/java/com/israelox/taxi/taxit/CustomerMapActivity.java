@@ -130,7 +130,7 @@ public class CustomerMapActivity extends AppCompatActivity implements OnMapReady
     public double latitude;
     public String ratingso;
     public  String timeso;
-    private int distance;
+    private int distances;
     private int duration;
 
 
@@ -350,7 +350,7 @@ private GoogleMap mMapfa;
 
         setSupportActionBar(toolbar);
         searchcontianer = (RelativeLayout) findViewById(R.id.searchcontainer);
-        requestone = (Button) findViewById(R.id.requestone);
+//        requestone = (Button) findViewById(R.id.requestone);
 
 
 
@@ -551,15 +551,15 @@ mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         mRequest = (Button) findViewById(R.id.request);
 
 
-
-        requestone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchcontianer.setVisibility(View.VISIBLE);
-                requestone.setVisibility(View.INVISIBLE);
-                mRequest.setVisibility(View.VISIBLE);
-            }
-        });
+//
+//        requestone.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                searchcontianer.setVisibility(View.VISIBLE);
+//                requestone.setVisibility(View.INVISIBLE);
+//                mRequest.setVisibility(View.VISIBLE);
+//            }
+//        });
 
 //        mRequest.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -856,6 +856,85 @@ mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
 
 
                     mDriverMarker = mMap.addMarker(new MarkerOptions().position(driverLatLng).title("your driver").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_car)));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                        @Override
+                        public View getInfoWindow(Marker arg0) {
+                            return null;
+                        }
+
+                        @Override
+                        public View getInfoContents(Marker arg0) {
+
+                            View v = getLayoutInflater().inflate(R.layout.customlayout, null);
+
+                            TextView tLocation = (TextView) v.findViewById(R.id.location);
+
+                            TextView tSnippet = (TextView) v.findViewById(R.id.population);
+
+                            tLocation.setText("Distance "+distances+" ksh.");
+                            tSnippet.setText(duration+" away");
+
+//                        Toast.makeText(WanMaps.this, "Title is "+titleso, Toast.LENGTH_SHORT).show();
+
+
+//                            titleso=arg0.getTitle();
+//
+//
+//
+//
+//                            contentso=tSnippet.toString();
+                            return v;
+
+                        }
+                    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 }
 
             }
@@ -1115,6 +1194,7 @@ setLatitSelectedTwo(place.getLatLng().latitude);
         Intent fia=getIntent();
         String fias=getIntent().getStringExtra("latitsa");
         if(fias!=null) {
+            String services=fia.getStringExtra("Services");
             latitudess = Double.parseDouble(fia.getStringExtra("latitsa"));
             longitudess = Double.parseDouble(fia.getStringExtra("longitsa"));
             latitudesstwo = Double.parseDouble(fia.getStringExtra("latitsatwo"));
@@ -1203,11 +1283,11 @@ setLatitSelectedTwo(place.getLatLng().latitude);
 
                 final RadioButton radioButton = (RadioButton) findViewById(selectId);
 
-                if (radioButton.getHint() == null){
+                if (services == null){
                     return;
                 }
 
-                requestService = radioButton.getHint().toString();
+                requestService = services;
 
                 requestBol = true;
 
@@ -1471,7 +1551,7 @@ setLatitSelectedTwo(place.getLatLng().latitude);
 
                         TextView tSnippet = (TextView) v.findViewById(R.id.population);
 
-                         tLocation.setText("Distance "+distance);
+                         tLocation.setText("Distance "+distances);
                          tSnippet.setText(duration+" away");
 
 //                        Toast.makeText(WanMaps.this, "Title is "+titleso, Toast.LENGTH_SHORT).show();
@@ -1631,6 +1711,9 @@ setLatitSelectedTwo(place.getLatLng().latitude);
 
     @Override
     public void onRoutingStart() {
+
+
+
     }
 
     @Override
@@ -2023,7 +2106,7 @@ setLatitSelectedTwo(place.getLatLng().latitude);
     private void setDistance(int distance)
     {
 
-        this.distance=distance;
+        this.distances=distance;
 
     }
 
