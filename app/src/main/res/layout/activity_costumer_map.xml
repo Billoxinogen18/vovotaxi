@@ -217,8 +217,8 @@ android:padding="10dp"
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="370dp"
-            android:layout_height="110dp"
+            android:layout_width="380dp"
+            android:layout_height="120dp"
             android:textAlignment="center"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
@@ -363,79 +363,80 @@ android:padding="10dp"
         android:layout_width="390dp"
         android:layout_height="75dp"
 
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="13dp"
 
         android:textAlignment="center">
+
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="wrap_content"
 
+            android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/bike_button"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:button="@android:color/transparent"
-            android:layout_centerVertical="true"
+            <RadioButton
+                android:id="@+id/bike_button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_margin="26dp"
 
-            android:layout_margin="26dp"
-            android:layout_weight="1"
-            android:background="@drawable/motor_bike_icon"
-            android:clickable="true"
+                android:layout_weight="1"
+                android:background="@drawable/motor_bike_icon"
+                android:button="@android:color/transparent"
+                android:clickable="true"
 
-            android:foreground="@drawable/radioselector"
+                android:foreground="@drawable/radioselector"
 
-            android:hint="Bike"
+                android:hint="Bike"
 
-            android:textColorHint="@color/transpa_overlay" />
+                android:textColorHint="@color/transpa_overlay" />
 
-        <RadioButton
-            android:id="@+id/tuktuk_button"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:button="@android:color/transparent"
-            android:layout_margin="26dp"
-            android:layout_weight="1"
-            android:background="@drawable/tuktuk_icon"
+            <RadioButton
+                android:id="@+id/tuktuk_button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_margin="26dp"
+                android:layout_weight="1"
+                android:background="@drawable/tuktuk_icon"
+                android:button="@android:color/transparent"
 
-            android:clickable="true"
-            android:foreground="@drawable/radioselector"
-            android:hint="TukTuk"
+                android:clickable="true"
+                android:foreground="@drawable/radioselector"
+                android:hint="TukTuk"
 
-            android:textColorHint="@color/transpa_overlay" />
+                android:textColorHint="@color/transpa_overlay" />
 
-        <RadioButton
-            android:id="@+id/taxi_button"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_margin="26dp"
-            android:button="@android:color/transparent"
-            android:layout_weight="1"
-            android:background="@drawable/taxi_icon_m"
-            android:clickable="true"
-            android:foreground="@drawable/radioselector"
-            android:hint="Taxi"
-            android:textColorHint="@color/transpa_overlay" />
+            <RadioButton
+                android:id="@+id/taxi_button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_margin="26dp"
+                android:layout_weight="1"
+                android:background="@drawable/taxi_icon_m"
+                android:button="@android:color/transparent"
+                android:clickable="true"
+                android:foreground="@drawable/radioselector"
+                android:hint="Taxi"
+                android:textColorHint="@color/transpa_overlay" />
 
-        <RadioButton
-            android:id="@+id/limo_button"
+            <RadioButton
+                android:id="@+id/limo_button"
 
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_margin="26dp"
-            android:button="@android:color/transparent"
-            android:layout_weight="1"
-            android:background="@drawable/limo_round_small"
-            android:clickable="true"
-            android:foreground="@drawable/radioselector"
-            android:hint="Hire"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_margin="26dp"
+                android:layout_weight="1"
+                android:background="@drawable/limo_round_small"
+                android:button="@android:color/transparent"
+                android:clickable="true"
+                android:foreground="@drawable/radioselector"
+                android:hint="Hire"
 
-            android:textColorHint="@color/transpa_overlay" />
+                android:textColorHint="@color/transpa_overlay" />
         </RadioGroup>
     </LinearLayout>
 
@@ -492,9 +493,11 @@ android:padding="10dp"
         android:layout_width="wrap_content"
 
         android:layout_gravity="start"
+android:elevation="10dp"
         android:id="@+id/nav_view"
 
         android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_home"
 
 
         app:menu="@menu/activity_home_drawer" />

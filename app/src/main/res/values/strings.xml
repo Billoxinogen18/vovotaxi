@@ -4,6 +4,7 @@
 
     <string name="title_activity_wan_maps">Map</string>
     <string name="all_app_version">WanLive</string>
+    <string name="maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyC-2BR6hhnFLZfCn2u2zlayTEiKEhr2qVg</string>
 
 
     <string name="title_activity_maps">Current Place Details</string>

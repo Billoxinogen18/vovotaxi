@@ -28,6 +28,7 @@
 
         <activity
             android:name=".login"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,15 +38,19 @@
         </activity>
         <activity
             android:name=".Passenger"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Driver"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".PassengerMainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".DriverMainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -61,34 +66,44 @@
 
         <activity
             android:name=".DriverMapActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_driver_map"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CustomerMapActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CustomerSettingsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DriverSettingsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HistoryActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HistorySingleActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginSignUpDriver"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginSignUpPassenger"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RealLogConsumer"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RealLogDriver"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".LocationService" />
@@ -99,6 +114,7 @@
 
         <activity
             android:name=".MainMaps"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_main_maps" />
         <activity android:name=".FragmentsPractice" />
         <activity android:name=".PickLocation"

@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="300dp"
     android:layout_height="70dp"
-    android:paddingTop="12dp"
-    android:paddingBottom="20dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="12dp"
     android:paddingLeft="2dp"
     android:orientation="vertical"
     android:background="@drawable/bg_marker">
     <view
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:background="@color/white"></view>
+        android:layout_marginRight="2dp"
+        android:layout_marginLeft="2dp"
+        android:background="@drawable/bg_whitewhite"></view>
 
     <LinearLayout
         android:layout_width="250dp"
@@ -52,11 +52,11 @@
     </LinearLayout>
 
     <View
-        android:layout_width="5dp"
+        android:layout_width="2dp"
         android:layout_height="46dp"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/dp"
-        android:background="@color/white"></View>
+        android:background="@drawable/bg_whitewhite"></View>
 
     <ImageView
         android:id="@+id/dp"

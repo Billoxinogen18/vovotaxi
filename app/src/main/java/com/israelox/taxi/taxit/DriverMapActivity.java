@@ -414,11 +414,14 @@ public class DriverMapActivity extends AppCompatActivity implements OnMapReadyCa
                         if (destinationLatLng.latitude != 0.0 && destinationLatLng.longitude != 0.0) {
                             getRouteToMarker(destinationLatLng);
                         }
+                        starts();
                         mRideStatus.setText("drive completed");
 
                         break;
                     case 2:
                         recordRide();
+
+
                         endRide();
                         break;
                 }
@@ -524,9 +527,11 @@ public class DriverMapActivity extends AppCompatActivity implements OnMapReadyCa
         if (pickupLatLng != null && mLastLocation != null) {
             Routing routing = new Routing.Builder()
                     .travelMode(AbstractRouting.TravelMode.DRIVING)
+                    .key(getString(R.string.maps_key))
                     .withListener(this)
                     .alternativeRoutes(false)
                     .waypoints(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), pickupLatLng)
+
                     .build();
             routing.execute();
         }
@@ -667,11 +672,13 @@ public class DriverMapActivity extends AppCompatActivity implements OnMapReadyCa
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             } else {
                 checkLocationPermission();
+                mMap.setMyLocationEnabled(true);
             }
         }
     }

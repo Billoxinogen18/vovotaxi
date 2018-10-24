@@ -107,6 +107,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.vision.text.Line;
+import com.google.android.gms.vision.text.Text;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -249,7 +250,9 @@ private GoogleMap mMapfa;
            latitudesstwo = Double.parseDouble(fia.getStringExtra("latitsatwo"));
            longitudesstwo = Double.parseDouble(fia.getStringExtra("longistatwo"));
 //           book();
-           Toast.makeText(getApplicationContext(), latitudess+" "+longitudess, Toast.LENGTH_SHORT).show();
+//           Toast.makeText(getApplicationContext(), latitudess+" "+longitudess, Toast.LENGTH_SHORT).show();
+//       }
+
        }
 
 
@@ -352,11 +355,42 @@ private GoogleMap mMapfa;
         searchcontianer = (RelativeLayout) findViewById(R.id.searchcontainer);
 //        requestone = (Button) findViewById(R.id.requestone);
 
+        this.drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, this.drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        this.drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        this.navigationView = (NavigationView) findViewById(R.id.nav_view);
+        this.navigationView.setNavigationItemSelectedListener(this);
 
 
+        final ImageView imaga=(ImageView)findViewById(R.id.imageViewes);
+        final TextView customername=(TextView)findViewById(R.id.customername);
+        final TextView phonenumber=(TextView)findViewById(R.id.phonenumb);
 
 
+        String CustomerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(CustomerId);
+        mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                    if (map.get("name") != null) {
+                        customername.setText(map.get("name").toString());
+                    }
+                    if (map.get("phone") != null) {
+                        phonenumber.setText(map.get("phone").toString());
+                    }
+                    if (map.get("profileImageUrl") != null) {
+                        Glide.with(getApplication()).load(map.get("profileImageUrl").toString()).into(imaga);
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
 
 
@@ -476,12 +510,7 @@ private GoogleMap mMapfa;
 
 
 
-        this.drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, this.drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        this.drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        this.navigationView = (NavigationView) findViewById(R.id.nav_view);
-        this.navigationView.setNavigationItemSelectedListener(this);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -502,7 +531,7 @@ private GoogleMap mMapfa;
         mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
 
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        mRadioGroup.check(R.id.bike_button);
+//        mRadioGroup.check(R.id.bike_button);
         mMap=mMapfa;
 
 
@@ -1685,9 +1714,11 @@ setLatitSelectedTwo(place.getLatLng().latitude);
         if (destinationLatLng != null && latitudess != null&& latitudess != null) {
             Routing routing = new Routing.Builder()
                     .travelMode(AbstractRouting.TravelMode.DRIVING)
+                    .key(getString(R.string.maps_key))
                     .withListener(this)
                     .alternativeRoutes(false)
                     .waypoints(new LatLng(latitudess, longitudess), destinationLatLng)
+
                     .build();
             routing.execute();
         }
