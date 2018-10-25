@@ -68,7 +68,7 @@ public class RealLogConsumer extends AppCompatActivity {
         regist_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), LoginSignUpDriver.class));
+                startActivity(new Intent(getApplicationContext(), LoginSignUpPassenger.class));
             }
         });
 
@@ -158,7 +158,7 @@ public class RealLogConsumer extends AppCompatActivity {
 
 
 
-                            Intent mainIntent = new Intent(RealLogConsumer.this, DriverMapActivity.class);
+                            Intent mainIntent = new Intent(RealLogConsumer.this, CustomerMapActivity.class);
                             mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(mainIntent);
                             finish();
@@ -185,19 +185,6 @@ public class RealLogConsumer extends AppCompatActivity {
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

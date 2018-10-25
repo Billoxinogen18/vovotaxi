@@ -526,8 +526,9 @@ public class DriverMapActivity extends AppCompatActivity implements OnMapReadyCa
     private void getRouteToMarker(LatLng pickupLatLng) {
         if (pickupLatLng != null && mLastLocation != null) {
             Routing routing = new Routing.Builder()
-                    .travelMode(AbstractRouting.TravelMode.DRIVING)
                     .key(getString(R.string.maps_key))
+                    .travelMode(AbstractRouting.TravelMode.DRIVING)
+
                     .withListener(this)
                     .alternativeRoutes(false)
                     .waypoints(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), pickupLatLng)

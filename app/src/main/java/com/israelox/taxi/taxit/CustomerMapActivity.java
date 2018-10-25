@@ -1713,8 +1713,9 @@ setLatitSelectedTwo(place.getLatLng().latitude);
     private void getRouteToMarker(LatLng destinationLatLng) {
         if (destinationLatLng != null && latitudess != null&& latitudess != null) {
             Routing routing = new Routing.Builder()
-                    .travelMode(AbstractRouting.TravelMode.DRIVING)
                     .key(getString(R.string.maps_key))
+                    .travelMode(AbstractRouting.TravelMode.DRIVING)
+
                     .withListener(this)
                     .alternativeRoutes(false)
                     .waypoints(new LatLng(latitudess, longitudess), destinationLatLng)
